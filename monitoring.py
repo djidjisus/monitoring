@@ -1,5 +1,7 @@
 import time 
 import logging
+from dotenv import load_dotenv
+import os
 from data_handler import get_status
 from sms_alerts import send_sms
 
@@ -8,6 +10,12 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
+
+#Загружаем переменные из .env
+load_dotenv()
+
+#Получние номеров телефона из переменных окружения
+SMS_PHONE_NUMBERS = os.getenv("SMS_PHONE_NUMBERS", "").split(",")
 
 #Глобальное состояние системы
 current_state = {
@@ -74,7 +82,7 @@ def check_power_consumption(data):
 # Основная функция мониторинга
 def monitor():
     logging.info("Запуск мониторинга...")
-    phone_numbers = ["+79991234567"]  # Список номеров для отправки SMS
+    phone_numbers = SMS_PHONE_NUMBERS #Список номеров телефона для отправки SMS
 
     while True:
         try:
